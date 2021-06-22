@@ -22,6 +22,12 @@ const (
 	SIGN_NEW_LINE = "\n"
 	// SDK_VERSION sdk版本
 	SDK_VERSION = "1.0"
+	// API_VERSION 接口版本
+	API_VERSION = "2018-05-09"
+	// SIGNATURE_VERSION 签名版本
+	SIGNATURE_VERSION = "1.0"
+	// SIGNATURE_METHOD 签名方式
+	SIGNATURE_METHOD = "HMAC-SHA1"
 )
 
 // Client Http请求客户端
@@ -78,20 +84,37 @@ func NewWithConfig(config *ClientConfig) Client {
 }
 
 // WithProxy 设置代理
-func (c *Client) WithProxy(proxy, user, password string) {
+func (c *Client) WithProxy(proxy, user, password string) error {
 	c.config.proxy = proxy
 	c.config.proxyUser = user
 	c.config.proxyPassword = password
+	proxyURL, err := url.Parse(proxy)
+	if err != nil {
+		return fmt.Errorf("parse proxy host fail[%s]", err.Error())
+	}
+	proxyURL.User = url.UserPassword(user, password)
+	transport := &http.Transport{
+		Proxy: http.ProxyURL(proxyURL),
+	}
+	c.client.Transport = transport
+	return nil
 }
 
 // WithTimeout 设置超时时间
 func (c *Client) WithTimeout(duration time.Duration) {
 	c.config.timeout = duration
+	c.client.Timeout = duration
 }
 
-// WithConfig 设置客户端配置
-func (c *Client) WithConfig(config *ClientConfig) {
-	c.config = config
+// WithEndpoint 设置接口地址
+func (c *Client) WithEndpoint(endpoint string) {
+	c.config.endpoint = endpoint
+}
+
+// WithAkSk 设置aksk
+func (c *Client) WithAkSk(accesskey, secretkey string) {
+	c.config.accessKey = accesskey
+	c.config.secretKey = secretkey
 }
 
 // Config 获取客户端配置
@@ -123,14 +146,16 @@ func (c *Client) Do(method, path string, body interface{}) (*ContentSecurityResp
 	req.Header.Add("Content-Type", CONTENT_TYPE)
 	req.Header.Add("Content-Md5", newBase64Md5(bodyByte))
 	req.Header.Add("Date", time.Now().UTC().Format(http.TimeFormat))
-	req.Header.Add("x-acs-version", "2018-05-09")
+	req.Header.Add("x-acs-version", API_VERSION)
 	req.Header.Add("x-acs-signature-nonce", ranString(10))
-	req.Header.Add("x-acs-signature-version", "1.0")
-	req.Header.Add("x-acs-signature-method", "HMAC-SHA1")
+	req.Header.Add("x-acs-signature-version", SIGNATURE_VERSION)
+	req.Header.Add("x-acs-signature-method", SIGNATURE_METHOD)
+	// 请求签名
 	signStr, err := c.signature(req)
 	if err != nil {
 		return nil, fmt.Errorf("signature request fail[%s]", err.Error())
 	}
+	// 签名按照指定格式放在请求头中
 	req.Header.Add("Authorization", "acs"+" "+c.config.accessKey+":"+signStr)
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -145,11 +170,12 @@ func (c *Client) Do(method, path string, body interface{}) (*ContentSecurityResp
 	if err := json.Unmarshal(respBody, &respData); err != nil {
 		return nil, fmt.Errorf("unmarshal response body fail[%s]", err.Error())
 	}
+	// 签名之类的错误会出现这个错误码
 	if respData.Code1 != "" {
 		err = fmt.Errorf("(%s)%s", respData.Code1, respData.Message1)
 	}
 	// 非2xx状态码
-	if respData.Code/100 != 2 {
+	if err == nil && respData.Code/100 != 2 {
 		err = fmt.Errorf("(%d)%s", respData.Code, respData.Message)
 	}
 	return &respData, err
