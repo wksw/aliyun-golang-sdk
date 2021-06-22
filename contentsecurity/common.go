@@ -22,7 +22,7 @@ const (
 	// WEBPAGE_ASYNC_API_PATH 网页内容异步检测api路径
 	WEBPAGE_ASYNC_API_PATH = "/green/webpage/asyncscan"
 	// WEBPAGE_RESULT_API_PATH 网页内容检测结果
-	WEBPAGE_RESULT_API_PATH = "/green/webpage/result"
+	WEBPAGE_RESULT_API_PATH = "/green/webpage/results"
 )
 
 type clientInfoUserType string

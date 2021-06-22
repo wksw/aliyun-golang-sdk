@@ -61,7 +61,7 @@ func (c Client) ScanWebpageSync(in *ScanWebpageReq) (result *ScanWebpageResp, er
 
 // ScanWebpageAsync 网页内容同步检测
 func (c Client) ScanWebpageAsync(in *ScanWebpageAsyncReq) (result *ScanWebpageAsyncResp, err error) {
-	resp, err := c.Do(http.MethodPost, WEBPAGE_SYNC_API_PATH, in)
+	resp, err := c.Do(http.MethodPost, WEBPAGE_ASYNC_API_PATH, in)
 	if err != nil {
 		return nil, err
 	}
