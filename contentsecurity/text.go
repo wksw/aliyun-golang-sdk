@@ -49,22 +49,6 @@ type ScanTextData struct {
 	} `json:"results,omitempty"`
 }
 
-// // ScanTextResult 文本检测结果
-// type ScanTextResult struct {
-// 	ScanCommonResultResp
-// 	Extras  map[string]string `json:"extras,omitempty"`
-// 	Details []struct {
-// 		Label    string `json:"label,omitempty"`
-// 		Contexts []struct {
-// 			Context   string           `json:"context,omitempty"`
-// 			Positions []map[string]int `json:"positions,omitempty"`
-// 			LibName   string           `json:"libName,omitempty"`
-// 			LibCode   string           `json:"libCode,omitempty"`
-// 			RuleType  string           `json:"ruleType,omitempty"`
-// 		} `json:"contexts,omitempty"`
-// 	} `json:"details,omitempty"`
-// }
-
 // ScanText 文本内容安全检测
 func (c Client) ScanText(in *ScanTextReq) (result *ScanTextResp, err error) {
 	resp, err := c.Do(http.MethodPost, TEXT_API_PATH, in)
