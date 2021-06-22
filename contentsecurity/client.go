@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"runtime"
 	"sort"
 	"strings"
 	"time"
@@ -19,6 +20,8 @@ const (
 	CONTENT_TYPE = "application/json"
 	// SIGN_NEW_LINE 签名换行符号
 	SIGN_NEW_LINE = "\n"
+	// SDK_VERSION sdk版本
+	SDK_VERSION = "1.0"
 )
 
 // Client Http请求客户端
@@ -61,7 +64,8 @@ func New(endpoint, accessKey, secretKey string) Client {
 			timeout:   10 * time.Second,
 		},
 		clientInfo: &ClientInfo{
-			SDKVersion: "1.0",
+			SDKVersion: SDK_VERSION,
+			OS:         runtime.GOOS,
 		},
 	}
 }
