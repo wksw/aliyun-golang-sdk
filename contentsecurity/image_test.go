@@ -38,17 +38,19 @@ func TestScanImageSync(t *testing.T) {
 func TestScanImageAsync(t *testing.T) {
 	client := New(testEndpoint, testAccessKey, testSecretKey)
 	resp, err := client.ScanImageAsync(&ScanImageAsyncReq{
-		ScanCommonReq: ScanCommonReq{
-			Scenes: []string{"porn"},
-		},
-		Tasks: []ScanImageTask{
-			{
-				ClientInfo: ClientInfo{
-					UserId:   "abc",
-					UserType: UserOther,
+		ScanImageSyncReq: ScanImageSyncReq{
+			ScanCommonReq: ScanCommonReq{
+				Scenes: []string{"porn"},
+			},
+			Tasks: []ScanImageTask{
+				{
+					ClientInfo: ClientInfo{
+						UserId:   "abc",
+						UserType: UserOther,
+					},
+					DataId: "123",
+					Url:    "https://tcloud-public.oss-cn-hongkong.aliyuncs.com/avatar/1384693247049883648/6f693c25-13ad-4979-941f-5966d9dc92cd.jpg?X_PP_Audience%3D1384693247049883648%26X_PP_ExpiredAt%3D1620465261%26X_PP_GrantedAt%3D1620465261%26X_PP_Method%3D%2A%26X_PP_ObjectName%3Davatar%2F1384693247049883648%2F6f693c25-13ad-4979-941f-5966d9dc92cd.jpg%26X_PP_Owner%3D1384693247049883648%26X_PP_ResourceType%3Davatar%26X_PP_Signature%3D12ee0717ba6cd2dc0b9c8e4a72a4d9e4",
 				},
-				DataId: "123",
-				Url:    "https://tcloud-public.oss-cn-hongkong.aliyuncs.com/avatar/1384693247049883648/6f693c25-13ad-4979-941f-5966d9dc92cd.jpg?X_PP_Audience%3D1384693247049883648%26X_PP_ExpiredAt%3D1620465261%26X_PP_GrantedAt%3D1620465261%26X_PP_Method%3D%2A%26X_PP_ObjectName%3Davatar%2F1384693247049883648%2F6f693c25-13ad-4979-941f-5966d9dc92cd.jpg%26X_PP_Owner%3D1384693247049883648%26X_PP_ResourceType%3Davatar%26X_PP_Signature%3D12ee0717ba6cd2dc0b9c8e4a72a4d9e4",
 			},
 		},
 	})

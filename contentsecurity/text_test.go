@@ -7,7 +7,7 @@ import (
 
 func TestTextScan(t *testing.T) {
 	client := New(testEndpoint, testAccessKey, testSecretKey)
-	resp, err := client.ScanText(&ScanTextRequest{
+	resp, err := client.ScanText(&ScanTextReq{
 		ScanCommonReq: ScanCommonReq{
 			Scenes: []string{"antispam"},
 		},

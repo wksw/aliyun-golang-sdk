@@ -11,14 +11,11 @@ type ScanVideoSyncReq struct {
 
 // ScanVideoAsyncReq 视频异步检测请求
 type ScanVideoAsyncReq struct {
-	ScanCommonReq
-	AudioScenes []string        `json:"audioScenes"`
-	Live        bool            `json:"live"`
-	Offline     bool            `json:"offline"`
-	Callback    string          `json:"callback"`
-	Seed        string          `json:"seed"`
-	CryptType   string          `json:"cryptType"`
-	Tasks       []ScanVideoTask `json:"tasks"`
+	ScanVideoSyncReq
+	ScanCommonAsyncReq
+	AudioScenes []string `json:"audioScenes"`
+	Live        bool     `json:"live"`
+	Offline     bool     `json:"offline"`
 }
 
 // ScanVideoTask 视频检测任务
@@ -110,53 +107,41 @@ type ScanVideoResp struct {
 }
 
 // ScanVideoSync 视频同步检测
-func (c Client) ScanVideoSync(in *ScanVideoSyncReq) (*ScanVideoResp, error) {
+func (c Client) ScanVideoSync(in *ScanVideoSyncReq) (result *ScanVideoResp, err error) {
 	resp, err := c.Do(http.MethodPost, VIDEO_SYNC_API_PATH, in)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanVideoResp{}
-	if err := interfaceConvert(resp, result); err != nil {
-		return result, err
-	}
-	return result, nil
+	result = &ScanVideoResp{}
+	return result, interfaceConvert(resp, result)
 }
 
 // ScanVideoAsync 视频异步检测
-func (c Client) ScanVideoAsync(in *ScanVideoAsyncReq) (*ScanVideoAsyncResp, error) {
+func (c Client) ScanVideoAsync(in *ScanVideoAsyncReq) (result *ScanVideoAsyncResp, err error) {
 	resp, err := c.Do(http.MethodPost, VIDEO_ASYNC_API_PATH, in)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanVideoAsyncResp{}
-	if err := interfaceConvert(resp, result); err != nil {
-		return result, err
-	}
-	return result, nil
+	result = &ScanVideoAsyncResp{}
+	return result, interfaceConvert(resp, result)
 }
 
 // ScanVideoResult 视频异步检测结果
-func (c Client) ScanVideoResult(taskIds []string) (*ScanVideoResp, error) {
+func (c Client) ScanVideoResult(taskIds []string) (result *ScanVideoResp, err error) {
 	resp, err := c.Do(http.MethodPost, VIDEO_RESULT_API_PATH, taskIds)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanVideoResp{}
-	if err := interfaceConvert(resp, result); err != nil {
-		return result, err
-	}
-	return result, nil
+	result = &ScanVideoResp{}
+	return result, interfaceConvert(resp, result)
 }
 
 // ScanVideoCancel 取消视频检测
-func (c Client) ScanVideoCancel(taskIds []string) (*ScanVideoResp, error) {
+func (c Client) ScanVideoCancel(taskIds []string) (result *ScanVideoResp, err error) {
 	resp, err := c.Do(http.MethodPost, VIDEO_CANCEL_API_PATH, taskIds)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanVideoResp{}
-	if err := interfaceConvert(resp, result); err != nil {
-		return result, err
-	}
-	return result, nil
+	result = &ScanVideoResp{}
+	return result, interfaceConvert(resp, result)
 }

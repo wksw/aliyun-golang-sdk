@@ -9,19 +9,21 @@ import (
 func TestScanVideoAsync(t *testing.T) {
 	client := New(testEndpoint, testAccessKey, testSecretKey)
 	resp, err := client.ScanVideoAsync(&ScanVideoAsyncReq{
-		ScanCommonReq: ScanCommonReq{
-			Scenes: []string{"porn"},
-		},
-		Tasks: []ScanVideoTask{
-			{
-				ClientInfo: ClientInfo{
-					UserId:   "abc",
-					UserType: UserOther,
+		ScanVideoSyncReq: ScanVideoSyncReq{
+			ScanCommonReq: ScanCommonReq{
+				Scenes: []string{"porn"},
+			},
+			Tasks: []ScanVideoTask{
+				{
+					ClientInfo: ClientInfo{
+						UserId:   "abc",
+						UserType: UserOther,
+					},
+					DataId:    "123",
+					Url:       "https://zhiou-index-video.oss-cn-beijing.aliyuncs.com/index_video1.mp4",
+					Interval:  5,
+					MaxFrames: 100,
 				},
-				DataId:    "123",
-				Url:       "https://zhiou-index-video.oss-cn-beijing.aliyuncs.com/index_video1.mp4",
-				Interval:  5,
-				MaxFrames: 100,
 			},
 		},
 	})

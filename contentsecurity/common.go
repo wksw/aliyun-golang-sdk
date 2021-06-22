@@ -17,6 +17,12 @@ const (
 	VIDEO_CANCEL_API_PATH = "/green/video/cancelscan"
 	// VIDEO_RESULT_API_PATH 视频检测结果
 	VIDEO_RESULT_API_PATH = "/green/video/results"
+	// WEBPAGE_SYNC_API_PATH 网页内容同步检测api路径
+	WEBPAGE_SYNC_API_PATH = "/green/webpage/scan"
+	// WEBPAGE_ASYNC_API_PATH 网页内容异步检测api路径
+	WEBPAGE_ASYNC_API_PATH = "/green/webpage/asyncscan"
+	// WEBPAGE_RESULT_API_PATH 网页内容检测结果
+	WEBPAGE_RESULT_API_PATH = "/green/webpage/result"
 )
 
 type clientInfoUserType string
@@ -81,7 +87,7 @@ type ScanCommonDataResp struct {
 
 // ScanCommonResultResp 检测公共结果
 type ScanCommonResultResp struct {
-	Scene      string  `json:"scent"`
+	Scene      string  `json:"scene"`
 	Suggestion string  `json:"suggestion"`
 	Label      string  `json:"label"`
 	SubLabel   string  `json:"sublabel,omitempty"`
@@ -97,4 +103,11 @@ type ScanExtras struct {
 	} `json:"hitLibInfo,omitempty"`
 	NewFramePrefix string `json:"newFramePrefix,omitempty"`
 	NewFrames      string `json:"newFrames,omitempty"`
+}
+
+// ScanCommonAsyncReq 异步请求
+type ScanCommonAsyncReq struct {
+	Callback  string `json:"callback"`
+	Seed      string `json:"seed"`
+	CryptType string `json:"cryptType"`
 }

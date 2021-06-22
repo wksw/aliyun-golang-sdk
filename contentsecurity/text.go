@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-// ScanTextRequest 文本内容检测请求
+// ScanTextReq 文本内容检测请求
 // 参考https://help.aliyun.com/document_detail/70439.html?spm=a2c4g.11186623.6.701.7cae3860tgGsFO
-type ScanTextRequest struct {
+type ScanTextReq struct {
 	ScanCommonReq
 	// 检测对象列表
 	Tasks []ScanTextTask `json:"tasks,omitempty"`
@@ -22,39 +22,55 @@ type ScanTextTask struct {
 	Content string `json:"content" validate:"required,max=10000"`
 }
 
-// ScanTextResponse 文本内容检测返回
-type ScanTextResponse struct {
+// ScanTextResp 文本内容检测返回
+type ScanTextResp struct {
 	ContentSecurityCommonResp
-	Data []struct {
-		ScanCommonDataResp
-		Content         string `json:"content"`
-		FilteredContent string `json:"filteredContent"`
-		Results         []struct {
-			ScanCommonResultResp
-			Extras  map[string]string `json:"extras"`
-			Details []struct {
-				Label    string `json:"label"`
-				Contexts []struct {
-					Context   string           `json:"context"`
-					Positions []map[string]int `json:"positions"`
-					LibName   string           `json:"libName"`
-					LibCode   string           `json:"libCode"`
-					RuleType  string           `json:"ruleType"`
-				} `json:"contexts"`
-			} `json:"details"`
-		} `json:"results,omitempty"`
-	} `json:"data"`
+	Data []ScanTextData `json:"data"`
 }
 
+// ScanTextData 文本内容检测返回数据
+type ScanTextData struct {
+	ScanCommonDataResp
+	Content         string `json:"content"`
+	FilteredContent string `json:"filteredContent"`
+	Results         []struct {
+		ScanCommonResultResp
+		Extras  map[string]string `json:"extras,omitempty"`
+		Details []struct {
+			Label    string `json:"label,omitempty"`
+			Contexts []struct {
+				Context   string           `json:"context,omitempty"`
+				Positions []map[string]int `json:"positions,omitempty"`
+				LibName   string           `json:"libName,omitempty"`
+				LibCode   string           `json:"libCode,omitempty"`
+				RuleType  string           `json:"ruleType,omitempty"`
+			} `json:"contexts,omitempty"`
+		}
+	} `json:"results,omitempty"`
+}
+
+// // ScanTextResult 文本检测结果
+// type ScanTextResult struct {
+// 	ScanCommonResultResp
+// 	Extras  map[string]string `json:"extras,omitempty"`
+// 	Details []struct {
+// 		Label    string `json:"label,omitempty"`
+// 		Contexts []struct {
+// 			Context   string           `json:"context,omitempty"`
+// 			Positions []map[string]int `json:"positions,omitempty"`
+// 			LibName   string           `json:"libName,omitempty"`
+// 			LibCode   string           `json:"libCode,omitempty"`
+// 			RuleType  string           `json:"ruleType,omitempty"`
+// 		} `json:"contexts,omitempty"`
+// 	} `json:"details,omitempty"`
+// }
+
 // ScanText 文本内容安全检测
-func (c Client) ScanText(in *ScanTextRequest) (*ScanTextResponse, error) {
+func (c Client) ScanText(in *ScanTextReq) (result *ScanTextResp, err error) {
 	resp, err := c.Do(http.MethodPost, TEXT_API_PATH, in)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanTextResponse{}
-	if err := interfaceConvert(resp, result); err != nil {
-		return result, err
-	}
-	return result, nil
+	result = &ScanTextResp{}
+	return result, interfaceConvert(resp, result)
 }

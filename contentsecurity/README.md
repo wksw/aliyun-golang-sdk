@@ -27,7 +27,7 @@ go get github.com/wksw/aliyun-golang-sdk/contentsecurity
 
     func main() {
         client := contentsecurity.New("endpoint", "ak", "sk")
-        resp, err := client.ScanText(&contentsecurity.ScanTextRequest{
+        resp, err := client.ScanText(&ScanTextReq{
             ScanCommonReq: ScanCommonReq{
                 Scenes: []string{"antispam"},
             },
