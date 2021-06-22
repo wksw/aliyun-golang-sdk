@@ -1,2 +1,3 @@
 # 测试配置文件，里面包含敏感信息
 contentsecurity/test_config.go
+cover.out

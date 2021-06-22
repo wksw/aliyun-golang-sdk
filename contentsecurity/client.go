@@ -20,8 +20,10 @@ const (
 	CONTENT_TYPE = "application/json"
 	// SIGN_NEW_LINE 签名换行符号
 	SIGN_NEW_LINE = "\n"
+
 	// SDK_VERSION sdk版本
 	SDK_VERSION = "1.0"
+
 	// API_VERSION 接口版本
 	API_VERSION = "2018-05-09"
 	// SIGNATURE_VERSION 签名版本
@@ -67,7 +69,6 @@ func New(endpoint, accessKey, secretKey string) Client {
 			endpoint:  endpoint,
 			accessKey: accessKey,
 			secretKey: secretKey,
-			timeout:   10 * time.Second,
 		},
 		clientInfo: &ClientInfo{
 			SDKVersion: SDK_VERSION,
