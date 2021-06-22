@@ -1,0 +1,7 @@
+package contentsecurity
+
+var (
+	testEndpoint  = "https://green.ap-southeast-1.aliyuncs.com"
+	testAccessKey = "xxx"
+	testSecretKey = "xxx"
+)
