@@ -15,7 +15,7 @@ type ScanTextRequest struct {
 
 // ScanTextTask 文本内容检测任务
 type ScanTextTask struct {
-	ClientInfo *ClientInfo `json:"clientInfo"`
+	ClientInfo ClientInfo `json:"clientInfo"`
 	// 检测对象对应数据ID
 	DataId string `json:"dataId" validate:"max=128"`
 	// 待检测文本

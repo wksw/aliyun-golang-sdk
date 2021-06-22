@@ -13,7 +13,7 @@ func TestTextScan(t *testing.T) {
 		},
 		Tasks: []ScanTextTask{
 			{
-				ClientInfo: &ClientInfo{
+				ClientInfo: ClientInfo{
 					UserId:   "abc",
 					UserType: UserOther,
 				},
@@ -26,6 +26,7 @@ func TestTextScan(t *testing.T) {
 	t.Log(string(b))
 	if err != nil {
 		t.Error(err.Error())
+		t.FailNow()
 	}
 	t.Log(resp)
 	if resp.Code != 200 {

@@ -26,14 +26,14 @@ type ScanVideoTask struct {
 	ClientInfo ClientInfo `json:"clientInfo"`
 	DataId     string     `json:"dataId" validate:"max=128"`
 	LiveId     string     `json:"liveId"`
-	Url        string     `json:"url"`
+	Url        string     `json:"url,omitempty"`
 	Frams      []struct {
 		Rate float32 `json:"rate"`
 		Url  string  `json:"url" validate:"required"`
-	} `json:"frams"`
+	} `json:"frams,omitempty"`
 	FramePrefix string `json:"framePrefix"`
-	Interval    int    `json:"interval"`
-	MaxFrames   int    `json:"maxFrames"`
+	Interval    int    `json:"interval,omitempty"`
+	MaxFrames   int    `json:"maxFrames,omitempty"`
 }
 
 // ScanVideoTaskFram 待检测视频的截帧信息
@@ -137,7 +137,7 @@ func (c Client) ScanVideoAsync(in *ScanVideoAsyncReq) (*ScanVideoAsyncResp, erro
 
 // ScanVideoResult 视频异步检测结果
 func (c Client) ScanVideoResult(taskIds []string) (*ScanVideoResp, error) {
-	resp, err := c.Do(http.MethodPost, VIDEO_ASYNC_API_PATH, taskIds)
+	resp, err := c.Do(http.MethodPost, VIDEO_RESULT_API_PATH, taskIds)
 	if err != nil {
 		return nil, err
 	}
@@ -149,12 +149,12 @@ func (c Client) ScanVideoResult(taskIds []string) (*ScanVideoResp, error) {
 }
 
 // ScanVideoCancel 取消视频检测
-func (c Client) ScanVideoCancel(taskIds []string) (*ScanCommonDataResp, error) {
+func (c Client) ScanVideoCancel(taskIds []string) (*ScanVideoResp, error) {
 	resp, err := c.Do(http.MethodPost, VIDEO_CANCEL_API_PATH, taskIds)
 	if err != nil {
 		return nil, err
 	}
-	result := &ScanCommonDataResp{}
+	result := &ScanVideoResp{}
 	if err := interfaceConvert(resp, result); err != nil {
 		return result, err
 	}

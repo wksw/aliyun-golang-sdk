@@ -1,7 +1,10 @@
 // Package contentsecurity 图片内容安全检测
 package contentsecurity
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 // ScanImageSyncReq 图片同步检测请求
 // 参考https://help.aliyun.com/document_detail/70292.html?spm=a2c4g.11186623.6.628.5234aba5r5qacM
@@ -27,8 +30,8 @@ type ScanImageTask struct {
 	DataId     string       `json:"dataId" validate:"max=128"`
 	Url        string       `json:"url" validate:"required"`
 	Extras     []ScanExtras `json:"extras"`
-	Interval   int          `json:"interval"`
-	MaxFrames  int          `json:"maxFrames"`
+	Interval   int          `json:"interval,omitempty"`
+	MaxFrames  int          `json:"maxFrames,omitempty"`
 }
 
 // ScanImageAsyncResp 图片异步检测返回
@@ -43,9 +46,9 @@ type ScanImageAsyncResp struct {
 // ScanImageData 图片检测返回
 type ScanImageData struct {
 	ScanCommonDataResp
-	Extras   []ScanExtras `json:"extras"`
-	Url      string       `json:"url"`
-	StoreUrl string       `json:"storeUrl"`
+	Extras   ScanExtras `json:"extras,omitempty"`
+	Url      string     `json:"url"`
+	StoreUrl string     `json:"storeUrl"`
 	Results  []struct {
 		ScanCommonResultResp
 		// 截断后的每一帧图像的临时访问地址
@@ -56,7 +59,7 @@ type ScanImageData struct {
 		// 图片中含有广告或文字违规信息时，返回图片中广告文字命中的风险关键词信息。
 		HintWordsInfo []struct {
 			Context string `json:"context"`
-		} `json:"hintWordsInfo"`
+		} `json:"hintWordsInfo,omitempty"`
 		QrcodeData      []string `json:"qrcodeData,omitempty"`
 		QrcodeLocations []struct {
 			X      float32 `json:"x"`
@@ -104,8 +107,10 @@ type ScanImageResp struct {
 func (c Client) ScanImageSync(in *ScanImageSyncReq) (*ScanImageResp, error) {
 	resp, err := c.Do(http.MethodPost, IMAGE_SYNC_API_PATH, in)
 	if err != nil {
+		fmt.Println("====", err.Error())
 		return nil, err
 	}
+	fmt.Println("--------", resp)
 	result := &ScanImageResp{}
 	if err := interfaceConvert(resp, result); err != nil {
 		return result, err

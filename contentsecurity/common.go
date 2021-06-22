@@ -15,6 +15,8 @@ const (
 	VIDEO_ASYNC_API_PATH = "/green/video/asyncscan"
 	// VIDEO_CANCEL_API_PATH 取消视频检测
 	VIDEO_CANCEL_API_PATH = "/green/video/cancelscan"
+	// VIDEO_RESULT_API_PATH 视频检测结果
+	VIDEO_RESULT_API_PATH = "/green/video/results"
 )
 
 type clientInfoUserType string
@@ -92,5 +94,7 @@ type ScanExtras struct {
 		Context string `json:"context"`
 		LibCode string `json:"libCode"`
 		LibName string `json:"libName"`
-	} `json:"hitLibInfo"`
+	} `json:"hitLibInfo,omitempty"`
+	NewFramePrefix string `json:"newFramePrefix,omitempty"`
+	NewFrames      string `json:"newFrames,omitempty"`
 }

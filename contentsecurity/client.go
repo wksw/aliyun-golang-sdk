@@ -36,7 +36,7 @@ type ContentSecurityCommonResp struct {
 	// 错误码
 	Code int `json:"code"`
 	// 错误描述
-	Message string `json:"message,omitempty"`
+	Message string `json:"msg,omitempty"`
 	// 和Code1功能保持一致
 	Message1 string `json:"Message,omitempty"`
 	// 请求唯一标识符
