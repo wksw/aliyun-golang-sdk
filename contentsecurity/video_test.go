@@ -11,7 +11,7 @@ func TestScanVideoAsync(t *testing.T) {
 	resp, err := client.ScanVideoAsync(&ScanVideoAsyncReq{
 		ScanVideoSyncReq: ScanVideoSyncReq{
 			ScanCommonReq: ScanCommonReq{
-				Scenes: []string{"porn"},
+				Scenes: []string{ImageScenePorn},
 			},
 			Tasks: []ScanVideoTask{
 				{

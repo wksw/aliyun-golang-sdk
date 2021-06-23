@@ -54,7 +54,7 @@ func TestScanWebpageAsync(t *testing.T) {
 	if resp.Code/100 != 2 {
 		t.Errorf("response code not 2xx")
 	}
-	time.Sleep(30 * time.Second)
+	time.Sleep(60 * time.Second)
 	var taskIds []string
 	for _, data := range resp.Data {
 		taskIds = append(taskIds, data.TaskId)

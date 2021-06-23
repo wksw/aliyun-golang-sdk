@@ -25,13 +25,28 @@ const (
 	WEBPAGE_RESULT_API_PATH = "/green/webpage/results"
 )
 
-type clientInfoUserType string
-
-var (
+const (
 	// UserOther 其他用户
-	UserOther clientInfoUserType = "others"
+	UserOther string = "others"
 	// UserTaobao 淘宝用户
-	UserTaobao clientInfoUserType = "taobao"
+	UserTaobao string = "taobao"
+)
+
+const (
+	// TextSceneAntispam 文本检测反垃圾场景
+	TextSceneAntispam string = "antispam"
+	// ImageScenePorn 智能鉴黄
+	ImageScenePorn string = "porn"
+	// ImageSceneTerrorism 暴恐涉政
+	ImageSceneTerrorism string = "terrorism"
+	// ImageSceneAd 图文违规
+	ImageSceneAd string = "ad"
+	// ImageSceneQrcode 二维码
+	ImageSceneQrcode string = "qrcode"
+	// ImageSceneLive 不良场景
+	ImageSceneLive string = "live"
+	// ImageSceneLogo 图片log
+	ImageSceneLogo string = "logo"
 )
 
 // ClientInfo 客户端详情
@@ -42,7 +57,7 @@ type ClientInfo struct {
 	// 配置信息版本
 	CfgVersion string `json:"cfgVersion,omitempty"`
 	// 用户类型
-	UserType clientInfoUserType `json:"userType,omitempty"`
+	UserType string `json:"userType,omitempty"`
 	// 用户唯一标识符
 	UserId string `json:"userId,omitempty"`
 	// 用户昵称

@@ -10,7 +10,7 @@ func TestScanImageSync(t *testing.T) {
 	client := New(testEndpoint, testAccessKey, testSecretKey)
 	resp, err := client.ScanImageSync(&ScanImageSyncReq{
 		ScanCommonReq: ScanCommonReq{
-			Scenes: []string{"porn"},
+			Scenes: []string{ImageScenePorn},
 		},
 		Tasks: []ScanImageTask{
 			{
@@ -40,7 +40,7 @@ func TestScanImageAsync(t *testing.T) {
 	resp, err := client.ScanImageAsync(&ScanImageAsyncReq{
 		ScanImageSyncReq: ScanImageSyncReq{
 			ScanCommonReq: ScanCommonReq{
-				Scenes: []string{"porn"},
+				Scenes: []string{ImageScenePorn},
 			},
 			Tasks: []ScanImageTask{
 				{
