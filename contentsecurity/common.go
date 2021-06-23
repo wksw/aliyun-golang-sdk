@@ -25,6 +25,7 @@ const (
 	WEBPAGE_RESULT_API_PATH = "/green/webpage/results"
 )
 
+// 用户类型
 const (
 	// UserOther 其他用户
 	UserOther string = "others"
@@ -32,6 +33,7 @@ const (
 	UserTaobao string = "taobao"
 )
 
+// 检测场景
 const (
 	// TextSceneAntispam 文本检测反垃圾场景
 	TextSceneAntispam string = "antispam"
@@ -48,6 +50,9 @@ const (
 	// ImageSceneLogo 图片log
 	ImageSceneLogo string = "logo"
 )
+
+// H 任意构造体
+type H map[string]interface{}
 
 // ClientInfo 客户端详情
 // 参考https://help.aliyun.com/document_detail/53413.html?spm=a2c4g.11186623.6.622.78be2ba1jPje6N
