@@ -29,28 +29,91 @@ go get github.com/wksw/aliyun-golang-sdk/contentsecurity
 > 如何使用也可参考测试用例
 
 ```golang
-    import "github.com/wksw/aliyun-golang-sdk/contentsecurity"
+import (
+    "log"
 
-    func main() {
-        client := contentsecurity.New("endpoint", "ak", "sk")
-        resp, err := client.ScanText(&ScanTextReq{
-            ScanCommonReq: ScanCommonReq{
-                Scenes: []string{"antispam"},
-            },
-            Tasks: []ScanTextTask{
-                {
-                    ClientInfo: ClientInfo{
-                        UserId:   "abc",
-                        UserType: UserOther,
-                    },
-                    DataId:  "123",
-                    Content: "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
+    "github.com/wksw/aliyun-golang-sdk/contentsecurity"
+)
+
+func main() {
+    client := contentsecurity.New("endpoint", "ak", "sk")
+    resp, err := client.ScanText(&ScanTextReq{
+        ScanCommonReq: ScanCommonReq{
+            Scenes: []string{"antispam"},
+        },
+        Tasks: []ScanTextTask{
+            {
+                ClientInfo: ClientInfo{
+                    UserId:   "abc",
+                    UserType: contentsecurity.UserOther,
                 },
+                DataId:  "123",
+                Content: "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
             },
-        })
-        if err != nil {
-            log.Fatal(err.Error())
-        }
-        // 根据业务逻辑自行处理返回逻辑
+        },
+    })
+    if err != nil {
+        log.Fatal(err.Error())
     }
+    // 根据业务逻辑自行处理返回逻辑
+}
+```
+
+```golang
+import (
+    "log"
+
+    cs "github.com/wksw/aliyun-golang-sdk/contentsecurity"
+)
+
+func main() {
+    client := cs.New("endpoint", "ak", "sk")
+    var out cs.ScanTextResp
+    if err := client.Request(cs.H{
+        "scenes": []string{"antispam"},
+        "tasks": []cs.H{
+            {
+                "clientInfo": cs.H{
+                    "userId": "abc",
+                    "userType": cs.UserOther,
+                },
+                "dataId": "123",
+                "content": "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
+            },
+        },
+    }, &out); err != nil {
+        log.Fatal(err.Error())
+    }
+    // 根据业务逻辑自行处理
+}
+```
+
+```golang
+import (
+    "log"
+    "net/http"
+
+    cs "github.com/wksw/aliyun-golang-sdk/contentsecurity"
+)
+
+func main() {
+    client := cs.New("endpoint", "ak", "sk")
+    resp, err := client.Do(http.MethodPost, cs.TEXT_API_PATH, cs.H{
+        "scenes": []string{"antispam"},
+        "tasks": []cs.H{
+            {
+                "clientInfo": cs.H{
+                    "userId": "abc",
+                    "userType": cs.UserOther,
+                },
+                "dataId": "123",
+                "content": "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
+            },
+        },
+    })
+    if err != nil {
+        log.Fatal(err.Error())
+    }
+    // 根据业务逻辑自行处理
+}
 ```
