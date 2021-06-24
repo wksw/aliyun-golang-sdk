@@ -69,19 +69,21 @@ import (
 func main() {
     client := cs.New("endpoint", "ak", "sk")
     var out cs.ScanTextResp
-    if err := client.Request(cs.H{
-        "scenes": []string{"antispam"},
-        "tasks": []cs.H{
-            {
-                "clientInfo": cs.H{
-                    "userId": "abc",
-                    "userType": cs.UserOther,
+    if err := client.Request(cs.TEXT_API_PATH, 
+        cs.H{
+            "scenes": []string{"antispam"},
+            "tasks": []cs.H{
+                {
+                    "clientInfo": cs.H{
+                        "userId": "abc",
+                        "userType": cs.UserOther,
+                    },
+                    "dataId": "123",
+                    "content": "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
                 },
-                "dataId": "123",
-                "content": "本校小额贷款，安全、快捷、方便、无抵押，随机随贷，当天放款，上门服务。",
             },
         },
-    }, &out); err != nil {
+        &out); err != nil {
         log.Fatal(err.Error())
     }
     // 根据业务逻辑自行处理
