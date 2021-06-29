@@ -2,6 +2,7 @@ package contentsecurity
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -64,7 +65,14 @@ type ContentSecurityResp struct {
 // New 创建http请求客户端
 func New(endpoint, accessKey, secretKey string) Client {
 	return Client{
-		client: http.DefaultClient,
+		client: &http.Client{
+			Timeout: 5 * time.Second,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
+		},
 		config: &ClientConfig{
 			endpoint:  endpoint,
 			accessKey: accessKey,
@@ -75,47 +83,6 @@ func New(endpoint, accessKey, secretKey string) Client {
 			OS:         runtime.GOOS,
 		},
 	}
-}
-
-// NewWithConfig 根据配置创建http请求客户端
-func NewWithConfig(config *ClientConfig) Client {
-	return Client{
-		config: config,
-	}
-}
-
-// WithProxy 设置代理
-func (c *Client) WithProxy(proxy, user, password string) error {
-	c.config.proxy = proxy
-	c.config.proxyUser = user
-	c.config.proxyPassword = password
-	proxyURL, err := url.Parse(proxy)
-	if err != nil {
-		return fmt.Errorf("parse proxy host fail[%s]", err.Error())
-	}
-	proxyURL.User = url.UserPassword(user, password)
-	transport := &http.Transport{
-		Proxy: http.ProxyURL(proxyURL),
-	}
-	c.client.Transport = transport
-	return nil
-}
-
-// WithTimeout 设置超时时间
-func (c *Client) WithTimeout(duration time.Duration) {
-	c.config.timeout = duration
-	c.client.Timeout = duration
-}
-
-// WithEndpoint 设置接口地址
-func (c *Client) WithEndpoint(endpoint string) {
-	c.config.endpoint = endpoint
-}
-
-// WithAkSk 设置aksk
-func (c *Client) WithAkSk(accesskey, secretkey string) {
-	c.config.accessKey = accesskey
-	c.config.secretKey = secretkey
 }
 
 // Config 获取客户端配置
