@@ -27,7 +27,7 @@ type ScanVideoTask struct {
 	Frames     []struct {
 		Offset int32  `json:"offset"`
 		Url    string `json:"url" validate:"required"`
-	} `json:"frams,omitempty"`
+	} `json:"frames,omitempty"`
 	FramePrefix string `json:"framePrefix"`
 	Interval    int    `json:"interval,omitempty"`
 	MaxFrames   int    `json:"maxFrames,omitempty"`
