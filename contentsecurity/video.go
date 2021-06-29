@@ -25,8 +25,8 @@ type ScanVideoTask struct {
 	LiveId     string     `json:"liveId"`
 	Url        string     `json:"url,omitempty"`
 	Frams      []struct {
-		Rate float32 `json:"rate"`
-		Url  string  `json:"url" validate:"required"`
+		Offset int32  `json:"offset"`
+		Url    string `json:"url" validate:"required"`
 	} `json:"frams,omitempty"`
 	FramePrefix string `json:"framePrefix"`
 	Interval    int    `json:"interval,omitempty"`
